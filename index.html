@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>City Race - Disaster Randomizer</title>
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: #4104cc;
+    margin: 0;
+    padding: 10px;
+  }
+
+  .card {
+    background: white;
+    max-width: 700px;
+    margin: auto;
+    padding: 15px;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0,0,0,.15);
+  }
+
+  .gameTitle {
+    font-size: 2rem;
+    margin: 0 0 10px 0;
+  }
+
+  button {
+    font-size: 1rem;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 10px;
+    background: #222;
+    color: white;
+    cursor: pointer;
+    margin-bottom: 12px;
+  }
+
+  button:hover {
+    background: #444;
+  }
+
+  h2 {
+    margin: 5px 0;
+    font-size: 1.5rem;
+  }
+
+  .subhead {
+    font-size: 1rem;
+    margin: 8px 0 12px 0;
+    line-height: 1.35;
+  }
+
+  .resultBox {
+    margin: 8px 0;
+    font-size: 1.1rem;
+    font-weight: bold;
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+    max-height: 280px;
+    margin: 10px auto 0 auto;
+    border: 2px solid #333;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+  <h1 class="gameTitle">City Race</h1>
+
+  <button onclick="rollDisaster()">DISASTER STRIKES!!</button>
+
+  <h2 id="headline">Press the button</h2>
+
+  <div id="subhead" class="subhead"></div>
+
+  <div id="intensity" class="resultBox"></div>
+
+  <img id="mapImage" src="" alt="" style="display:none;">
+
+</div>
+
+<script>
+const disasters = [
+  {
+    headline: "Tornado",
+    subhead: "Oh no! Mother nature has sucked you up and moved you backwards twice the number of spaces as the intensity rating. You are hit if you are in the disaster square or any square south of the square. Fortunately, your car is not damaged...phewww!",
+    useIntensity: true,
+    useRandomPosition: true
+  },
+  {
+    headline: "Earthquake",
+    subhead: "Woah, the earth is shaking. Sometimes you don't feel earthquakes when you drive in cars...not this time. You sustain damage according to the intensity. Count how many squares away you are from the epicenter and subtract one for each orthogonal space to see your damage.",
+    useIntensity: true,
+    useRandomPosition: true
+  },
+  {
+    headline: "Fire",
+    subhead: "Who left the stove on? All players roll and whoever rolls the lowest is the guilty party. Fire starts in your square. If you're in the space (regardless of whether you started the fire), your car is damaged by 2. If you are in an adjacent square, you must go to the nearest hospital for smoke inhalation, whether it's in front or behind you. You may not go to a hospital in the fire square.",
+    useIntensity: false,
+    staticImage: "mapgrid.jpg"
+  },
+  {
+    headline: "Lightning",
+    subhead: "Look out! Lightning strikes! If it's a level one, it's beautiful, enjoy nature's majesty. Level 2 starts a fire. But it's slow. Anybody in the strike zone has the opportunity to roll and get away. If you can move 3 or more spaces, you're safe. If you don't move far enough or it's a level 3, you're damaged by 1.",
+    useIntensity: true,
+    useRandomPosition: true
+  },
+  {
+    headline: "Volcanic Eruption",
+    subhead: "Isn't earth majestic? She's also hot and she's melting your tires. You sustain damage according to the intensity.",
+    useIntensity: true,
+    useRandomPosition: true
+  },
+  {
+    headline: "Tsunami",
+    subhead: "If you're in a square with water or a square adjacent to water, you get washed down to the water spot earliest in the game. You cannot move forward.",
+    useIntensity: false,
+    staticImage: "mapgrid.jpg"
+  }
+];
+
+function randomNumber(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function rollDisaster() {
+
+  const disaster = disasters[randomNumber(0, disasters.length - 1)];
+
+  document.getElementById("headline").textContent = disaster.headline;
+  document.getElementById("subhead").textContent = disaster.subhead;
+
+  const intensityDiv = document.getElementById("intensity");
+  const mapImage = document.getElementById("mapImage");
+
+  if (disaster.useIntensity) {
+    const intensity = randomNumber(1, 3);
+    intensityDiv.textContent = "Intensity: " + intensity;
+  } else {
+    intensityDiv.textContent = "";
+  }
+
+  if (disaster.useRandomPosition) {
+
+    const position = randomNumber(1, 16);
+
+    mapImage.src = `disaster${position}.jpg`;
+    mapImage.alt = `Disaster Position ${position}`;
+    mapImage.style.display = "block";
+
+  } else if (disaster.staticImage) {
+
+    mapImage.src = disaster.staticImage;
+    mapImage.alt = "Map Grid";
+    mapImage.style.display = "block";
+
+  } else {
+
+    mapImage.style.display = "none";
+
+  }
+}
+</script>
+
+</body>
+</html>
+```
