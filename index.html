@@ -104,7 +104,7 @@ const disasters = [
   },
  {
     headline: "Hurricane",
-    subhead: "That breeze sure feels great. Gosh, it's picking up. Is that a flying cow?!?! Take cover! A hurricane intensity of 1 blows you into earliest space of the previous grid square. A hurricane intensity of 2 blows you into the earliest space two grid squares back. A hurricane intensity of 3 blows you into the earliest space of the highlighted grid, whether forward or backward.",
+    subhead: "That breeze sure feels great. Gosh, it's picking up. Is that a flying cow?!?! Take cover! If you're in the disaster square, that's the eye of the storm and you're fine. If you're adjacent to the eye, you get blown backwards the twice the number of spaces as the intensity rating. Everyone else on the board gets blown backward 1 times the number of spaces as the intensity rating.",
     useIntensity: true,
     useRandomPosition: true
   },
@@ -185,4 +185,3 @@ function rollDisaster() {
 
 </body>
 </html>
-```
