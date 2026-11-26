@@ -195,8 +195,9 @@ function rollDisaster() {
 }
 
 function addPoster(poster) {
-  posters.set(poster.id, poster);
-  posterSelect.add(new Option(poster.file.name, poster.id));
+  const id = String(poster.id);
+  posters.set(id, poster);
+  posterSelect.add(new Option(poster.file.name, id));
 }
 
 function rememberSelection() {
@@ -230,7 +231,7 @@ async function loadPosters() {
 
   try {
     const selectedId = localStorage.getItem(selectionKey);
-    if (posters.has(Number(selectedId))) posterSelect.value = selectedId;
+    if (posters.has(selectedId)) posterSelect.value = selectedId;
   } catch {
     posterStatus.textContent = "The previous poster selection is unavailable.";
   }
@@ -266,7 +267,7 @@ async function uploadPoster() {
       transaction.onabort = () => reject(transaction.error);
     });
     addPoster({ id, file });
-    posterSelect.value = id;
+    posterSelect.value = String(id);
     posterStatus.textContent = "Poster saved in this browser.";
     rememberSelection();
   } catch {
