@@ -23,52 +23,176 @@
     box-shadow: 0 4px 15px rgba(0,0,0,.15);
   }
 
-  h1 { font-size: 2rem; margin: 0 0 10px; }
-  h2 { font-size: 1.5rem; margin: 5px 0; }
+  h1 {
+    margin: 0;
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    line-height: 1.05;
+    letter-spacing: -.035em;
+  }
+
+  h2 { margin: 0; font-size: 1.15rem; }
+
+  button, input, select { font: inherit; }
 
   button {
-    font-size: 1rem;
-    padding: 10px 18px;
-    border: none;
-    border-radius: 10px;
-    background: #222;
+    padding: 9px 14px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    background: #35128a;
     color: white;
     cursor: pointer;
-    margin-bottom: 12px;
   }
 
-  button:hover { background: #444; }
+  button:hover:not(:disabled) { background: #4920ad; }
+  button:disabled { opacity: .5; cursor: default; }
+
+  .game-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(240px, 290px);
+    align-items: start;
+    gap: 24px;
+    text-align: left;
+    color: #231838;
+  }
+
+  .game-title-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  #rollButton {
+    background: #4104cc;
+    font-weight: 700;
+  }
+
+  #rollButton:hover { background: #3410a0; }
 
   .poster-controls {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .poster-controls label, .timer form label {
+    min-width: 0;
+    font-size: .875rem;
+    font-weight: 700;
+    color: #493d5d;
+  }
+
+  .poster-controls select, .poster-controls input, .timer input, .timer select {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    min-height: 38px;
+    margin-top: 5px;
+    padding: 6px 8px;
+    border: 1px solid #d8cfe6;
+    border-radius: 7px;
+    background: white;
+    color: #231838;
+    font-weight: 400;
+  }
+
+  .poster-controls input::file-selector-button {
+    margin-right: 8px;
+    padding: 3px 8px;
+    border: 0;
+    border-radius: 4px;
+    background: #ede5ff;
+    color: #35128a;
+    font: inherit;
+  }
+
+  .result {
+    margin-top: 14px;
+    padding: 12px 14px;
+    border-left: 3px solid #7146d0;
+    border-radius: 0 8px 8px 0;
+    background: #f7f4fc;
+  }
+
+  .result-meta {
     display: flex;
-    justify-content: center;
-    align-items: center;
     flex-wrap: wrap;
     gap: 8px;
-    margin-bottom: 12px;
   }
 
-  .poster-controls select, .poster-controls input {
-    font: inherit;
-    max-width: 100%;
-  }
-
-  #posterStatus:empty { display: none; }
-  #posterStatus { margin: 0 0 12px; }
-  #subhead { margin: 8px 0 12px; line-height: 1.35; }
+  #subhead { margin-top: 6px; line-height: 1.5; }
+  #subhead:empty, #intensity:empty, #position:empty { display: none; }
 
   #intensity, #position {
-    margin: 8px 0;
-    font-size: 1.1rem;
-    font-weight: bold;
+    margin-top: 8px;
+    padding: 4px 8px;
+    border-radius: 5px;
+    background: #ebe3fa;
+    font-size: .875rem;
+    font-weight: 700;
   }
 
-  #intensity:empty, #position:empty { display: none; }
+  .timer-panel {
+    padding: 14px;
+    border: 1px solid #ded8ec;
+    border-radius: 12px;
+    background: #faf8ff;
+  }
+
+  .timer summary { cursor: pointer; font-size: 1.15rem; font-weight: 700; }
+
+  .timer form {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 12px;
+  }
+
+  .timer form label:first-child, #durationLabel, .timer-actions { grid-column: 1 / -1; }
+
+  .timer-actions { display: flex; gap: 8px; }
+  #timerStop { border-color: #ded8ec; background: white; color: #35128a; }
+  #timerStop:hover:not(:disabled) { background: #ede5ff; }
+
+  #timerDisplay, #timerStatus, #posterStatus { margin: 8px 0 0; }
+  #timerDisplay {
+    color: #b91c1c;
+    font-size: clamp(2.75rem, 6vw, 4rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -.04em;
+    font-variant-numeric: tabular-nums;
+  }
+  #timerDisplay.random-armed {
+    animation: alarm-pulse 1.4s ease-in-out infinite;
+  }
+
+  @keyframes alarm-pulse {
+    50% { opacity: .45; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #timerDisplay.random-armed { animation: none; }
+  }
+
+  #timerStatus, #posterStatus { font-size: .875rem; }
+  #timerDisplay:empty, #timerStatus:empty, #posterStatus:empty { display: none; }
+
+  @media (max-width: 680px) {
+    .game-header { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  }
+
+  @media (max-width: 420px) {
+    .poster-controls { grid-template-columns: minmax(0, 1fr); }
+  }
 
   #mapFrame {
     box-sizing: border-box;
     position: relative;
-    margin: 10px auto 0;
+    margin: 16px auto 0;
     border: 2px solid #333;
   }
 
@@ -105,23 +229,64 @@
 </head>
 <body>
 <div class="card">
-  <h1>City Race</h1>
+  <div class="game-header">
+    <div>
+      <div class="game-title-row">
+        <h1>City Race</h1>
+        <button id="rollButton" type="button">DISASTER STRIKES!!</button>
+      </div>
 
-  <div class="poster-controls">
-    <label for="posterSelect">Poster</label>
-    <select id="posterSelect">
-      <option value="">Original poster</option>
-    </select>
-    <label for="posterUpload">Upload poster image</label>
-    <input id="posterUpload" type="file" accept="image/*" disabled>
+      <div class="poster-controls">
+        <label>Poster
+          <select id="posterSelect">
+            <option value="">Original poster</option>
+          </select>
+        </label>
+        <label>Upload poster image
+          <input id="posterUpload" type="file" accept="image/*" disabled>
+        </label>
+      </div>
+      <p id="posterStatus" role="status"></p>
+
+      <div id="disasterResult" class="result" hidden>
+        <h2 id="headline"></h2>
+        <div id="subhead"></div>
+        <div class="result-meta">
+          <div id="intensity"></div>
+          <div id="position"></div>
+        </div>
+      </div>
+    </div>
+
+    <section class="timer-panel" aria-label="Game timer">
+      <details class="timer" open>
+        <summary>Timer</summary>
+        <form id="timerForm">
+          <label>Mode
+            <select id="timerMode">
+              <option value="countdown">Countdown</option>
+              <option value="random">Random alarm</option>
+            </select>
+          </label>
+          <label id="durationLabel">Minutes
+            <input id="timerDuration" type="number" min="0.02" max="1440" step="any" value="5" required>
+          </label>
+          <label id="minimumLabel" hidden>Earliest (min)
+            <input id="timerMinimum" type="number" min="0.02" max="1440" step="any" value="2" required disabled>
+          </label>
+          <label id="maximumLabel" hidden>Latest (min)
+            <input id="timerMaximum" type="number" min="0.02" max="1440" step="any" value="5" required disabled>
+          </label>
+          <div class="timer-actions">
+            <button id="timerStart" type="submit">Start</button>
+            <button id="timerStop" type="button" disabled>Stop</button>
+          </div>
+        </form>
+      </details>
+      <p id="timerDisplay" role="timer"></p>
+      <p id="timerStatus" role="status"></p>
+    </section>
   </div>
-  <p id="posterStatus" role="status"></p>
-
-  <button id="rollButton" type="button">DISASTER STRIKES!!</button>
-  <h2 id="headline">Press the button</h2>
-  <div id="subhead"></div>
-  <div id="intensity"></div>
-  <div id="position"></div>
   <div id="mapFrame" hidden>
     <img id="mapImage" alt="">
     <div id="posterGrid" aria-hidden="true" hidden></div>
@@ -156,8 +321,7 @@ const disasters = [
   },
   {
     headline: "Fire",
-    subhead: "Who left the stove on? All players roll and whoever rolls the lowest is the guilty party. Fire starts in your square. If you're in the space (regardless of whether you started the fire), your car is damaged by 2. If you are in an adjacent square, you must go to the nearest hospital for smoke inhalation, whether it's in front or behind you. You may not go to a hospital in the fire square.",
-    staticImage: "mapgrid.jpg"
+    subhead: "Who left the stove on? All players roll and whoever rolls the lowest is the guilty party. Fire starts in your square. If you're in the space (regardless of whether you started the fire), your car is damaged by 2. If you are in an adjacent square, you must go to the nearest hospital for smoke inhalation, whether it's in front or behind you. You may not go to a hospital in the fire square."
   },
   {
     headline: "Lightning",
@@ -173,8 +337,7 @@ const disasters = [
   },
   {
     headline: "Tsunami",
-    subhead: "If you're in a square with water or a square adjacent to water, you get washed down to the water spot earliest in the game. You cannot move forward.",
-    staticImage: "mapgrid.jpg"
+    subhead: "If you're in a square with water or a square adjacent to water, you get washed down to the water spot earliest in the game. You cannot move forward."
   }
 ];
 
@@ -202,21 +365,16 @@ function renderPoster() {
   const poster = posters.get(posterSelect.value);
   posterUrl = poster ? URL.createObjectURL(poster.file) : undefined;
   const position = currentRoll?.position;
-  const originalImage = position ? "mapgrid.jpg" : currentRoll?.disaster.staticImage;
-  const source = posterUrl || originalImage;
+  const source = posterUrl || "mapgrid.jpg";
 
   positionLabel.textContent = position ? `Disaster square: ${position}` : "";
-  mapFrame.hidden = !source;
-  posterGrid.hidden = !source;
+  mapFrame.hidden = false;
+  posterGrid.hidden = false;
   gridSquares.forEach((square, index) => {
     square.classList.toggle("affected", index + 1 === position);
   });
-  if (source) {
-    mapImage.alt = poster ? `Poster: ${poster.file.name}` : position ? `Disaster Position ${position}` : "Map Grid";
-    mapImage.src = source;
-  } else {
-    mapImage.removeAttribute("src");
-  }
+  mapImage.alt = poster ? `Poster: ${poster.file.name}` : "Map Grid";
+  mapImage.src = source;
   if (oldUrl) URL.revokeObjectURL(oldUrl);
 }
 
@@ -225,7 +383,8 @@ function rollDisaster() {
   const intensity = disaster.useIntensity ? randomNumber(1, 3) : null;
   const position = disaster.useRandomPosition ? randomNumber(1, 16) : null;
 
-  currentRoll = { disaster, position };
+  currentRoll = { position };
+  document.getElementById("disasterResult").hidden = false;
   document.getElementById("headline").textContent = disaster.headline;
   document.getElementById("subhead").textContent = disaster.subhead;
   document.getElementById("intensity").textContent = intensity ? `Intensity: ${intensity}` : "";
@@ -315,9 +474,137 @@ async function uploadPoster() {
   }
 }
 
+const timerForm = document.getElementById("timerForm");
+const timerMode = document.getElementById("timerMode");
+const timerDuration = document.getElementById("timerDuration");
+const timerMinimum = document.getElementById("timerMinimum");
+const timerMaximum = document.getElementById("timerMaximum");
+const timerStart = document.getElementById("timerStart");
+const timerStop = document.getElementById("timerStop");
+const timerDisplay = document.getElementById("timerDisplay");
+const timerStatus = document.getElementById("timerStatus");
+let timerInterval;
+let alarmAudio;
+let activeAlarm;
+
+function updateTimerInputs() {
+  const random = timerMode.value === "random";
+  timerDuration.disabled = random;
+  timerMinimum.disabled = !random;
+  timerMaximum.disabled = !random;
+  document.getElementById("durationLabel").hidden = random;
+  document.getElementById("minimumLabel").hidden = !random;
+  document.getElementById("maximumLabel").hidden = !random;
+  timerMaximum.setCustomValidity("");
+}
+
+function stopTimer() {
+  clearInterval(timerInterval);
+  timerStart.disabled = false;
+  timerStop.disabled = true;
+  timerMode.disabled = false;
+  timerDisplay.textContent = "";
+  timerDisplay.classList.remove("random-armed");
+}
+
+function playAlarm() {
+  if (alarmAudio?.state !== "running") return false;
+
+  const start = alarmAudio.currentTime;
+  const duration = 20;
+  const end = start + duration;
+  const tone = alarmAudio.createOscillator();
+  const volume = alarmAudio.createGain();
+  volume.gain.setValueAtTime(0, start);
+
+  tone.type = "triangle";
+  tone.frequency.setValueAtTime(480, start);
+  volume.gain.linearRampToValueAtTime(0.65, start + 0.07);
+  volume.gain.setValueAtTime(0.65, end - 0.15);
+  volume.gain.linearRampToValueAtTime(0, end);
+  for (let second = 0; second < duration; second++) {
+    tone.frequency.linearRampToValueAtTime(1050, start + second + 0.5);
+    tone.frequency.linearRampToValueAtTime(480, start + second + 1);
+  }
+
+  tone.connect(volume);
+  volume.connect(alarmAudio.destination);
+  activeAlarm = tone;
+  tone.onended = () => {
+    tone.disconnect();
+    volume.disconnect();
+    if (activeAlarm === tone) {
+      activeAlarm = undefined;
+      stopTimer();
+    }
+  };
+  tone.start(start);
+  tone.stop(end);
+  return true;
+}
+
+timerMode.addEventListener("change", updateTimerInputs);
+timerMinimum.addEventListener("input", () => timerMaximum.setCustomValidity(""));
+timerMaximum.addEventListener("input", () => timerMaximum.setCustomValidity(""));
+timerForm.addEventListener("submit", event => {
+  event.preventDefault();
+  const random = timerMode.value === "random";
+  if (random && timerMinimum.valueAsNumber > timerMaximum.valueAsNumber) {
+    timerMaximum.setCustomValidity("Latest must be at or after earliest.");
+    timerMaximum.reportValidity();
+    return;
+  }
+
+  try {
+    alarmAudio ??= new AudioContext();
+    alarmAudio.resume().catch(() => {});
+  } catch {
+    // The visual alarm still works when audio is unavailable.
+  }
+
+  const seconds = random
+    ? randomNumber(Math.round(timerMinimum.valueAsNumber * 60), Math.round(timerMaximum.valueAsNumber * 60))
+    : Math.round(timerDuration.valueAsNumber * 60);
+  const deadline = Date.now() + seconds * 1000;
+  timerStart.disabled = true;
+  timerStop.disabled = false;
+  timerMode.disabled = true;
+  timerDisplay.classList.toggle("random-armed", random);
+  if (random) timerDisplay.textContent = "?";
+  timerStatus.textContent = random ? "Random alarm armed" : "Countdown started.";
+
+  function tick() {
+    const remaining = Math.ceil((deadline - Date.now()) / 1000);
+    if (remaining <= 0) {
+      clearInterval(timerInterval);
+      timerDisplay.classList.remove("random-armed");
+      timerDisplay.textContent = random ? "" : "0:00";
+      timerStatus.textContent = random ? "Random alarm! Time’s up." : "Time’s up!";
+      if (!playAlarm()) stopTimer();
+    } else if (!random) {
+      const minutes = Math.floor(remaining / 60);
+      timerDisplay.textContent = `${minutes}:${String(remaining % 60).padStart(2, "0")}`;
+    }
+  }
+
+  timerInterval = setInterval(tick, 200);
+  tick();
+});
+timerStop.addEventListener("click", () => {
+  const wasSounding = Boolean(activeAlarm);
+  if (activeAlarm) {
+    const tone = activeAlarm;
+    activeAlarm = undefined;
+    tone.stop();
+  }
+  stopTimer();
+  timerStatus.textContent = wasSounding ? "Alarm stopped." : "Timer stopped.";
+});
+
 document.getElementById("rollButton").addEventListener("click", rollDisaster);
 posterSelect.addEventListener("change", rememberSelection);
 posterUpload.addEventListener("change", uploadPoster);
+renderPoster();
 loadPosters();
 </script>
 </body>
